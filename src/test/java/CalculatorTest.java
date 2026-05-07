@@ -16,6 +16,7 @@ class CalculatorTest {
         assertEquals(1, calc.dif(3, 2));
     }
 
+
     @Test
     void div() {
         assertEquals(2, calc.div(6, 3));
