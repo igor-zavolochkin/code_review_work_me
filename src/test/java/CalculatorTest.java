@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CalculatorTest {
 
+    Calculator calc = new Calculator();
+
     @Test
     void add() {
         Calculator calc = new Calculator();
@@ -21,6 +23,7 @@ class CalculatorTest {
         assertEquals(-4, calc.dif(2, 6));
         assertEquals(0, calc.dif(7, 7));
     }
+
 
     @Test
     void div() {
