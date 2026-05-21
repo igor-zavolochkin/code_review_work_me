@@ -1,38 +1,39 @@
 name: Java CI with Gradle
 
 on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   schedule:
     - cron: '30 12 * * 3'
     - cron: '0 22 * * 5'
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-
+    
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        java-version: [11, 17]
-
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        java-version: [11, 17, 18]
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: ${{ matrix.java-version }}
-
-      - name: Grant execute permission for gradlew
-        if: runner.os != 'Windows'
-        run: chmod +x gradlew
-
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: build
+    - uses: actions/checkout@v4
+    
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+    
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+    
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+        arguments: build
